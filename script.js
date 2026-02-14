@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerScrollThreshold: 50,
         scrollOffset: 80,
         animationDelay: 100,
-        whatsappNumber: '5512991090909',
+        whatsappNumber: '5511987654321',
         whatsappMessage: 'Olá, gostaria de solicitar uma cotação na Valle MIL.',
         formSubmitDelay: 1500
     };
@@ -725,22 +725,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 Utils.addClass(submitButton, 'loading');
             }
 
-            // Simula envio (substitua por sua lógica de backend)
-            setTimeout(() => {
+            // Prepara dados do formulário
+            const formData = new FormData(form);
+
+            // Envia para o PHP
+            fetch('cotacao.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
                 if (submitButton) {
                     submitButton.disabled = false;
                     submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Cotação';
                     Utils.removeClass(submitButton, 'loading');
                 }
 
-                // Exibe mensagem de sucesso
-                showSuccessMessage();
+                if (data.sucesso) {
+                    // Exibe mensagem de sucesso
+                    showSuccessMessage();
 
-                // Limpa erros
-                const inputs = Utils.selectAll('input, select, textarea', form);
-                inputs.forEach(input => clearError(input));
+                    // Limpa erros
+                    const inputs = Utils.selectAll('input, select, textarea', form);
+                    inputs.forEach(input => clearError(input));
+                } else {
+                    // Exibe mensagem de erro
+                    alert('❌ ' + data.mensagem);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao enviar formulário:', error);
+                
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Cotação';
+                    Utils.removeClass(submitButton, 'loading');
+                }
 
-            }, CONFIG.formSubmitDelay);
+                alert('❌ Erro ao enviar cotação. Por favor, tente novamente ou entre em contato por telefone.');
+            });
         };
 
         /**
@@ -1002,6 +1025,8 @@ document.addEventListener('DOMContentLoaded', () => {
          * Mostra o slide especificado
          */
         const showSlide = (index) => {
+            console.log('🎬 showSlide chamado com index:', index);
+            
             // Remove active de todos
             slides.forEach(slide => Utils.removeClass(slide, 'active'));
             dots.forEach(dot => Utils.removeClass(dot, 'active'));
@@ -1015,6 +1040,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentSlide = index;
             }
 
+            console.log('📍 Ativando slide:', currentSlide);
+
             // Ativa o slide e dot atual
             Utils.addClass(slides[currentSlide], 'active');
             Utils.addClass(dots[currentSlide], 'active');
@@ -1024,6 +1051,7 @@ document.addEventListener('DOMContentLoaded', () => {
          * Próximo slide
          */
         const nextSlide = () => {
+            console.log('➡️ Próximo slide');
             showSlide(currentSlide + 1);
         };
 
@@ -1031,6 +1059,7 @@ document.addEventListener('DOMContentLoaded', () => {
          * Slide anterior
          */
         const prevSlide = () => {
+            console.log('⬅️ Slide anterior');
             showSlide(currentSlide - 1);
         };
 
@@ -1038,6 +1067,7 @@ document.addEventListener('DOMContentLoaded', () => {
          * Autoplay
          */
         const startAutoplay = () => {
+            console.log('▶️ Autoplay iniciado');
             autoplayInterval = setInterval(nextSlide, 5000);
         };
 
@@ -1046,6 +1076,7 @@ document.addEventListener('DOMContentLoaded', () => {
          */
         const stopAutoplay = () => {
             if (autoplayInterval) {
+                console.log('⏸️ Autoplay pausado');
                 clearInterval(autoplayInterval);
             }
         };
@@ -1054,50 +1085,82 @@ document.addEventListener('DOMContentLoaded', () => {
          * Inicializa o carrossel
          */
         const init = () => {
-            if (!carousel || slides.length === 0) return;
+            console.log('🚀 Iniciando HeroCarousel...');
+            console.log('Carousel elemento:', carousel);
+            console.log('Total de slides:', slides.length);
+            console.log('Botão anterior:', prevBtn);
+            console.log('Botão próximo:', nextBtn);
+            console.log('Total de dots:', dots.length);
+
+            if (!carousel || slides.length === 0) {
+                console.error('❌ ERRO: Carrossel não encontrado ou sem slides!');
+                return;
+            }
+
+            console.log('✅ Elementos do carrossel encontrados!');
 
             // Navegação por botões
             if (prevBtn) {
                 prevBtn.addEventListener('click', () => {
+                    console.log('🖱️ Clique no botão anterior');
                     prevSlide();
                     stopAutoplay();
                     startAutoplay();
                 });
+                console.log('✅ Event listener adicionado ao botão anterior');
+            } else {
+                console.warn('⚠️ Botão anterior não encontrado');
             }
 
             if (nextBtn) {
                 nextBtn.addEventListener('click', () => {
+                    console.log('🖱️ Clique no botão próximo');
                     nextSlide();
                     stopAutoplay();
                     startAutoplay();
                 });
+                console.log('✅ Event listener adicionado ao botão próximo');
+            } else {
+                console.warn('⚠️ Botão próximo não encontrado');
             }
 
             // Navegação por dots
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
+                    console.log('🖱️ Clique no dot:', index);
                     showSlide(index);
                     stopAutoplay();
                     startAutoplay();
                 });
             });
+            console.log('✅ Event listeners adicionados aos dots');
 
             // Navegação por teclado
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') {
+                    console.log('⌨️ Tecla seta esquerda pressionada');
                     prevSlide();
                     stopAutoplay();
                     startAutoplay();
                 } else if (e.key === 'ArrowRight') {
+                    console.log('⌨️ Tecla seta direita pressionada');
                     nextSlide();
                     stopAutoplay();
                     startAutoplay();
                 }
             });
+            console.log('✅ Event listener de teclado adicionado');
 
             // Pause autoplay ao passar mouse
-            carousel.addEventListener('mouseenter', stopAutoplay);
-            carousel.addEventListener('mouseleave', startAutoplay);
+            carousel.addEventListener('mouseenter', () => {
+                console.log('🖱️ Mouse sobre o carrossel');
+                stopAutoplay();
+            });
+            carousel.addEventListener('mouseleave', () => {
+                console.log('🖱️ Mouse saiu do carrossel');
+                startAutoplay();
+            });
+            console.log('✅ Event listeners de mouse adicionados');
 
             // Touch/Swipe para mobile
             let touchStartX = 0;
@@ -1105,26 +1168,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             carousel.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
+                console.log('👆 Touch start:', touchStartX);
             });
 
             carousel.addEventListener('touchend', (e) => {
                 touchEndX = e.changedTouches[0].screenX;
+                console.log('👆 Touch end:', touchEndX);
                 handleSwipe();
             });
 
             const handleSwipe = () => {
+                const diff = touchEndX - touchStartX;
+                console.log('👆 Swipe detectado, diferença:', diff);
+                
                 if (touchEndX < touchStartX - 50) {
+                    console.log('👆 Swipe para esquerda');
                     nextSlide();
                 }
                 if (touchEndX > touchStartX + 50) {
+                    console.log('👆 Swipe para direita');
                     prevSlide();
                 }
                 stopAutoplay();
                 startAutoplay();
             };
+            console.log('✅ Event listeners de touch adicionados');
 
             // Inicia autoplay
             startAutoplay();
+            console.log('✅ HeroCarousel inicializado com sucesso!');
         };
 
         return { init };
