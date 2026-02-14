@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerScrollThreshold: 50,
         scrollOffset: 80,
         animationDelay: 100,
-        whatsappNumber: '5511987654321',
+        whatsappNumber: '5512991214649',
         whatsappMessage: 'Olá, gostaria de solicitar uma cotação na Valle MIL.',
         formSubmitDelay: 1500
     };
