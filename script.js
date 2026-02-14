@@ -984,6 +984,150 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return { init };
     })();
+    /* ========================================
+   CAROUSEL - Carrossel Hero
+   ======================================== */
+const HeroCarousel = (() => {
+    const carousel = Utils.select('.hero__carousel');
+    const slides = Utils.selectAll('.carousel__slide');
+    const prevBtn = Utils.select('.carousel__btn--prev');
+    const nextBtn = Utils.select('.carousel__btn--next');
+    const dots = Utils.selectAll('.carousel__dot');
+    
+    let currentSlide = 0;
+    let autoplayInterval;
+
+    /**
+     * Mostra o slide especificado
+     */
+    const showSlide = (index) => {
+        // Remove active de todos
+        slides.forEach(slide => Utils.removeClass(slide, 'active'));
+        dots.forEach(dot => Utils.removeClass(dot, 'active'));
+
+        // Garante que o índice está dentro dos limites
+        if (index >= slides.length) {
+            currentSlide = 0;
+        } else if (index < 0) {
+            currentSlide = slides.length - 1;
+        } else {
+            currentSlide = index;
+        }
+
+        // Ativa o slide e dot atual
+        Utils.addClass(slides[currentSlide], 'active');
+        Utils.addClass(dots[currentSlide], 'active');
+    };
+
+    /**
+     * Próximo slide
+     */
+    const nextSlide = () => {
+        showSlide(currentSlide + 1);
+    };
+
+    /**
+     * Slide anterior
+     */
+    const prevSlide = () => {
+        showSlide(currentSlide - 1);
+    };
+
+    /**
+     * Autoplay
+     */
+    const startAutoplay = () => {
+        autoplayInterval = setInterval(nextSlide, 5000); // Troca a cada 5 segundos
+    };
+
+    /**
+     * Para autoplay
+     */
+    const stopAutoplay = () => {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+        }
+    };
+
+    /**
+     * Inicializa o carrossel
+     */
+    const init = () => {
+        if (!carousel || slides.length === 0) return;
+
+        // Navegação por botões
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopAutoplay();
+                startAutoplay();
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopAutoplay();
+                startAutoplay();
+            });
+        }
+
+        // Navegação por dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+                stopAutoplay();
+                startAutoplay();
+            });
+        });
+
+        // Navegação por teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                stopAutoplay();
+                startAutoplay();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                stopAutoplay();
+                startAutoplay();
+            }
+        });
+
+        // Pause autoplay ao passar mouse
+        carousel.addEventListener('mouseenter', stopAutoplay);
+        carousel.addEventListener('mouseleave', startAutoplay);
+
+        // Touch/Swipe para mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        const handleSwipe = () => {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + 50) {
+                prevSlide();
+            }
+            stopAutoplay();
+            startAutoplay();
+        };
+
+        // Inicia autoplay
+        startAutoplay();
+    };
+
+    return { init };
+})();
 
     /* ========================================
        SCROLL TO TOP
@@ -1050,11 +1194,156 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return { init };
     })();
+    
+    /* ========================================
+       CAROUSEL - Carrossel Hero
+       ======================================== */
+    const HeroCarousel = (() => {
+        const carousel = Utils.select('.hero__carousel');
+        const slides = Utils.selectAll('.carousel__slide');
+        const prevBtn = Utils.select('.carousel__btn--prev');
+        const nextBtn = Utils.select('.carousel__btn--next');
+        const dots = Utils.selectAll('.carousel__dot');
+        
+        let currentSlide = 0;
+        let autoplayInterval;
+
+        /**
+         * Mostra o slide especificado
+         */
+        const showSlide = (index) => {
+            // Remove active de todos
+            slides.forEach(slide => Utils.removeClass(slide, 'active'));
+            dots.forEach(dot => Utils.removeClass(dot, 'active'));
+
+            // Garante que o índice está dentro dos limites
+            if (index >= slides.length) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else {
+                currentSlide = index;
+            }
+
+            // Ativa o slide e dot atual
+            Utils.addClass(slides[currentSlide], 'active');
+            Utils.addClass(dots[currentSlide], 'active');
+        };
+
+        /**
+         * Próximo slide
+         */
+        const nextSlide = () => {
+            showSlide(currentSlide + 1);
+        };
+
+        /**
+         * Slide anterior
+         */
+        const prevSlide = () => {
+            showSlide(currentSlide - 1);
+        };
+
+        /**
+         * Autoplay
+         */
+        const startAutoplay = () => {
+            autoplayInterval = setInterval(nextSlide, 5000); // Troca a cada 5 segundos
+        };
+
+        /**
+         * Para autoplay
+         */
+        const stopAutoplay = () => {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+            }
+        };
+
+        /**
+         * Inicializa o carrossel
+         */
+        const init = () => {
+            if (!carousel || slides.length === 0) return;
+
+            // Navegação por botões
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    prevSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    nextSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                });
+            }
+
+            // Navegação por dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                    stopAutoplay();
+                    startAutoplay();
+                });
+            });
+
+            // Navegação por teclado
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                }
+            });
+
+            // Pause autoplay ao passar mouse
+            carousel.addEventListener('mouseenter', stopAutoplay);
+            carousel.addEventListener('mouseleave', startAutoplay);
+
+            // Touch/Swipe para mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            carousel.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            const handleSwipe = () => {
+                if (touchEndX < touchStartX - 50) {
+                    nextSlide();
+                }
+                if (touchEndX > touchStartX + 50) {
+                    prevSlide();
+                }
+                stopAutoplay();
+                startAutoplay();
+            };
+
+            // Inicia autoplay
+            startAutoplay();
+        };
+
+        return { init };
+    })();
 
     /* ========================================
        INICIALIZAÇÃO
        ======================================== */
-    const App = (() => {
+ const App = (() => {
         const init = () => {
             // Inicializa todos os módulos
             MobileMenu.init();
@@ -1066,6 +1355,7 @@ document.addEventListener('DOMContentLoaded', () => {
             WhatsAppButton.init();
             MicroInteractions.init();
             ScrollToTop.init();
+            HeroCarousel.init();  // ← ADICIONE ESTA LINHA
 
             // Log de inicialização (remover em produção)
             console.log('%c Valle MIL - Site inicializado com sucesso! ', 'background: #0A2463; color: #C9A961; padding: 10px; font-weight: bold;');
@@ -1073,7 +1363,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return { init };
     })();
-
-    // Inicializa aplicação
-    App.init();
-});

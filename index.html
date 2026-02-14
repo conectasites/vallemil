@@ -107,12 +107,36 @@
                     </div>
                 </div>
 
-                <!-- Placeholder para Imagem/Ilustração -->
-                <div class="hero__image">
-                    <img src="images/hero-illustration.png" alt="Família protegida por seguros Valle MIL" class="hero__img">
-                </div>
+       <!-- Carrossel de Imagens -->
+<div class="hero__image">
+    <div class="hero__carousel">
+        <div class="carousel__container">
+            <!-- Slide 1: Banner Valle MIL -->
+            <div class="carousel__slide active">
+                <img src="images/BannerValleMIL.png" alt="Valle MIL - Protegendo seu presente, garantindo seu futuro" class="carousel__img">
             </div>
-        </section>
+            
+            <!-- Slide 2: Família -->
+            <div class="carousel__slide">
+                <img src="images/hero-illustration.png" alt="Família protegida por seguros Valle MIL" class="carousel__img">
+            </div>
+        </div>
+        
+        <!-- Setas de Navegação -->
+        <button class="carousel__btn carousel__btn--prev" aria-label="Imagem anterior">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel__btn carousel__btn--next" aria-label="Próxima imagem">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <!-- Indicadores (Dots) -->
+        <div class="carousel__indicators">
+            <button class="carousel__dot active" aria-label="Ir para slide 1" data-slide="0"></button>
+            <button class="carousel__dot" aria-label="Ir para slide 2" data-slide="1"></button>
+        </div>
+    </div>
+</div>
 
         <!-- ========================================
              SOBRE - Seção Institucional
