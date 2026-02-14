@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerScrollThreshold: 50,
         scrollOffset: 80,
         animationDelay: 100,
-        whatsappNumber: '5512991214649',
+        whatsappNumber: '5511987654321',
         whatsappMessage: 'Olá, gostaria de solicitar uma cotação na Valle MIL.',
         formSubmitDelay: 1500
     };
@@ -984,217 +984,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return { init };
     })();
-    /* ========================================
-   CAROUSEL - Carrossel Hero
-   ======================================== */
-const HeroCarousel = (() => {
-    const carousel = Utils.select('.hero__carousel');
-    const slides = Utils.selectAll('.carousel__slide');
-    const prevBtn = Utils.select('.carousel__btn--prev');
-    const nextBtn = Utils.select('.carousel__btn--next');
-    const dots = Utils.selectAll('.carousel__dot');
-    
-    let currentSlide = 0;
-    let autoplayInterval;
 
-    /**
-     * Mostra o slide especificado
-     */
-    const showSlide = (index) => {
-        // Remove active de todos
-        slides.forEach(slide => Utils.removeClass(slide, 'active'));
-        dots.forEach(dot => Utils.removeClass(dot, 'active'));
-
-        // Garante que o índice está dentro dos limites
-        if (index >= slides.length) {
-            currentSlide = 0;
-        } else if (index < 0) {
-            currentSlide = slides.length - 1;
-        } else {
-            currentSlide = index;
-        }
-
-        // Ativa o slide e dot atual
-        Utils.addClass(slides[currentSlide], 'active');
-        Utils.addClass(dots[currentSlide], 'active');
-    };
-
-    /**
-     * Próximo slide
-     */
-    const nextSlide = () => {
-        showSlide(currentSlide + 1);
-    };
-
-    /**
-     * Slide anterior
-     */
-    const prevSlide = () => {
-        showSlide(currentSlide - 1);
-    };
-
-    /**
-     * Autoplay
-     */
-    const startAutoplay = () => {
-        autoplayInterval = setInterval(nextSlide, 5000); // Troca a cada 5 segundos
-    };
-
-    /**
-     * Para autoplay
-     */
-    const stopAutoplay = () => {
-        if (autoplayInterval) {
-            clearInterval(autoplayInterval);
-        }
-    };
-
-    /**
-     * Inicializa o carrossel
-     */
-    const init = () => {
-        if (!carousel || slides.length === 0) return;
-
-        // Navegação por botões
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                stopAutoplay();
-                startAutoplay();
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                stopAutoplay();
-                startAutoplay();
-            });
-        }
-
-        // Navegação por dots
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
-                stopAutoplay();
-                startAutoplay();
-            });
-        });
-
-        // Navegação por teclado
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-                stopAutoplay();
-                startAutoplay();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-                stopAutoplay();
-                startAutoplay();
-            }
-        });
-
-        // Pause autoplay ao passar mouse
-        carousel.addEventListener('mouseenter', stopAutoplay);
-        carousel.addEventListener('mouseleave', startAutoplay);
-
-        // Touch/Swipe para mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        carousel.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        carousel.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        const handleSwipe = () => {
-            if (touchEndX < touchStartX - 50) {
-                nextSlide();
-            }
-            if (touchEndX > touchStartX + 50) {
-                prevSlide();
-            }
-            stopAutoplay();
-            startAutoplay();
-        };
-
-        // Inicia autoplay
-        startAutoplay();
-    };
-
-    return { init };
-})();
-
-    /* ========================================
-       SCROLL TO TOP
-       ======================================== */
-    const ScrollToTop = (() => {
-        let button = null;
-
-        /**
-         * Cria botão de volta ao topo
-         */
-        const createButton = () => {
-            button = document.createElement('button');
-            button.className = 'scroll-to-top';
-            button.innerHTML = '<i class="fas fa-arrow-up"></i>';
-            button.setAttribute('aria-label', 'Voltar ao topo');
-            button.style.cssText = `
-                position: fixed;
-                bottom: 100px;
-                right: 30px;
-                width: 50px;
-                height: 50px;
-                background: linear-gradient(135deg, #0A2463 0%, #1E3A8A 100%);
-                color: white;
-                border: none;
-                border-radius: 50%;
-                font-size: 1.25rem;
-                cursor: pointer;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                z-index: 1020;
-                box-shadow: 0 4px 15px rgba(10, 36, 99, 0.3);
-            `;
-            document.body.appendChild(button);
-
-            // Click handler
-            button.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        };
-
-        /**
-         * Mostra/esconde botão baseado no scroll
-         */
-        const handleScroll = () => {
-            if (!button) return;
-
-            if (window.pageYOffset > 500) {
-                button.style.opacity = '1';
-                button.style.visibility = 'visible';
-            } else {
-                button.style.opacity = '0';
-                button.style.visibility = 'hidden';
-            }
-        };
-
-        /**
-         * Inicializa botão
-         */
-        const init = () => {
-            createButton();
-            window.addEventListener('scroll', Utils.debounce(handleScroll, 100));
-        };
-
-        return { init };
-    })();
-    
     /* ========================================
        CAROUSEL - Carrossel Hero
        ======================================== */
@@ -1248,7 +1038,7 @@ const HeroCarousel = (() => {
          * Autoplay
          */
         const startAutoplay = () => {
-            autoplayInterval = setInterval(nextSlide, 5000); // Troca a cada 5 segundos
+            autoplayInterval = setInterval(nextSlide, 5000);
         };
 
         /**
@@ -1341,9 +1131,75 @@ const HeroCarousel = (() => {
     })();
 
     /* ========================================
+       SCROLL TO TOP
+       ======================================== */
+    const ScrollToTop = (() => {
+        let button = null;
+
+        /**
+         * Cria botão de volta ao topo
+         */
+        const createButton = () => {
+            button = document.createElement('button');
+            button.className = 'scroll-to-top';
+            button.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            button.setAttribute('aria-label', 'Voltar ao topo');
+            button.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                background: linear-gradient(135deg, #0A2463 0%, #1E3A8A 100%);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 1.25rem;
+                cursor: pointer;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 1020;
+                box-shadow: 0 4px 15px rgba(10, 36, 99, 0.3);
+            `;
+            document.body.appendChild(button);
+
+            // Click handler
+            button.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        };
+
+        /**
+         * Mostra/esconde botão baseado no scroll
+         */
+        const handleScroll = () => {
+            if (!button) return;
+
+            if (window.pageYOffset > 500) {
+                button.style.opacity = '1';
+                button.style.visibility = 'visible';
+            } else {
+                button.style.opacity = '0';
+                button.style.visibility = 'hidden';
+            }
+        };
+
+        /**
+         * Inicializa botão
+         */
+        const init = () => {
+            createButton();
+            window.addEventListener('scroll', Utils.debounce(handleScroll, 100));
+        };
+
+        return { init };
+    })();
+
+    /* ========================================
        INICIALIZAÇÃO
        ======================================== */
- const App = (() => {
+    const App = (() => {
         const init = () => {
             // Inicializa todos os módulos
             MobileMenu.init();
@@ -1355,7 +1211,6 @@ const HeroCarousel = (() => {
             WhatsAppButton.init();
             MicroInteractions.init();
             ScrollToTop.init();
-            HeroCarousel.init();  // ← ADICIONE ESTA LINHA
 
             // Log de inicialização (remover em produção)
             console.log('%c Valle MIL - Site inicializado com sucesso! ', 'background: #0A2463; color: #C9A961; padding: 10px; font-weight: bold;');
@@ -1363,3 +1218,7 @@ const HeroCarousel = (() => {
 
         return { init };
     })();
+
+    // Inicializa aplicação
+    App.init();
+});
